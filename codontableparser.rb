@@ -1,3 +1,6 @@
+# Parses the NCBI genetic code table, generating separate hash maps of each species' name, start & stop codons and codon table.  
+#
+# to return definitions, start  & stop codons as well as codon tables that can be used 
 class CodonTableParser
 
   def initialize(path)
@@ -153,14 +156,3 @@ class CodonTableParser
   private :bases, :prepare_range, :custom_range, :custom_codons, :table
 end
 
-
-table = CodonTableParser.new('data/codons.txt')
-
-puts "DEFINITIONS:"
-puts table.definitions
-puts "START CODONS"
-puts table.starts
-puts "STOP CODONS"
-puts table.stops
-puts "TABLES:"
-puts table.tables
