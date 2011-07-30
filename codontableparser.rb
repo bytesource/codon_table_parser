@@ -118,6 +118,7 @@ class CodonTableParser
   end
 
   def prepare_range range
+    require 'set'
     range.map do |val|
       val.is_a?(Range) ? val.to_a : val
     end.flatten.to_set.sort
@@ -153,6 +154,6 @@ class CodonTableParser
     hash
   end
 
-  private :bases, :prepare_range, :custom_range, :custom_codons, :table
+  private :content, :bases, :prepare_range, :custom_range, :custom_codons, :table
 end
 

@@ -10,3 +10,5 @@ puts "STOP CODONS"
 puts table.stops
 puts "TABLES:"
 puts table.tables
+puts "DATA"
+puts table.instance_variable_get(:data)
