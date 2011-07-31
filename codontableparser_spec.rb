@@ -304,14 +304,31 @@ describe CodonTableParser do
 
       describe "Method: 'tables'" do
 
+        before(:each) do
+          @reference_tables = eval(File.read('data/codon_tables_for_rspec.txt'))
+        end
+
+
         it "should return the correct codon to aa table for each species" do
 
           tables = @parser.tables
 
           tables.size.should == 17
 
-          reference_tables = File.read('data/codon_tables_for_rspec.txt')
-          tables.should == eval(reference_tables)
+          tables.should == @reference_tables
+        end
+
+        it " should only return the tables for the ids specified in the options" do
+
+          @tables = @parser.tables :range => [(1..3), 5]
+
+          @tables.size.should == 4
+          @tables.each do |key, table|
+            table.should == @reference_tables[key]
+          end
+        end
+
+        describe "Method: 'print'" do
         end
       end
     end
