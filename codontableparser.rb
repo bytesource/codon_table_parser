@@ -106,6 +106,13 @@ class CodonTableParser
     end]
   end
 
+  def bundle options = {}
+    [definitions(options),
+     starts(options),
+     stops(options),
+     tables(options)]
+  end
+
 
   def bases data
     del   = /[^\n]*\n\s+/.source

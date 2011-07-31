@@ -153,7 +153,6 @@ end
 # Rename to 'bundle'
 def print converted, triplets, options = {}
   [definitions(converted, options),
-   start_options = 
    start_codons(converted, triplets, options),
    stop_codons(converted, triplets, options),
    codon_tables(converted, triplets, options)]
