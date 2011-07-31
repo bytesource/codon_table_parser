@@ -2,13 +2,15 @@ require '../codontableparser'
 
 table = CodonTableParser.new('../data/codons.txt')
 
+require 'pp'
+
 puts "DEFINITIONS:"
-puts table.definitions
+pp table.definitions
 puts "START CODONS"
-puts table.starts
+pp table.starts
 puts "STOP CODONS"
-puts table.stops
+pp table.stops
 puts "TABLES:"
-puts table.tables
-puts "DATA"
-puts table.instance_variable_get(:data)
+# puts table.tables
+puts "BUNDLE"
+# pp table.bundle
