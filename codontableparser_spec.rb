@@ -305,7 +305,7 @@ describe CodonTableParser do
       describe "Method: 'tables'" do
 
         before(:each) do
-          @reference_tables = eval(File.read('data/codon_tables_for_rspec.txt'))
+          @reference_tables = eval(File.read('data/reference_data/reference_codon_tables.txt'))
         end
 
 
@@ -329,6 +329,19 @@ describe CodonTableParser do
         end
 
         describe "Method: 'print'" do
+
+          # it "should print all tables, definitions, start, and stop codons" do
+          #   @codons = codons
+
+          #   @all = print @converted, @codons
+
+          #   @all.size.should == 4
+          #   @all[0].size.should == 17
+          #   @all[1].size.should == 17
+          #   @all[2].size.should == 17
+          #   @all[3].size.should == 17
+          # end
+
         end
       end
     end

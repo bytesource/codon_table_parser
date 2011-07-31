@@ -1,0 +1,21 @@
+ {
+
+    1	=> "Standard (Eukaryote)",
+    2	=> "Vertebrate Mitochondrial",
+    3	=> "Yeast Mitochondorial",
+    4	=> "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
+    5	=> "Invertebrate Mitochondrial",
+    6	=> "Ciliate Macronuclear and Dasycladacean",
+    9	=> "Echinoderm Mitochondrial",
+    10	=> "Euplotid Nuclear",
+    11	=> "Bacteria",
+    12	=> "Alternative Yeast Nuclear",
+    13	=> "Ascidian Mitochondrial",
+    14	=> "Flatworm Mitochondrial",
+    15	=> "Blepharisma Macronuclear",
+    16	=> "Chlorophycean Mitochondrial",
+    21	=> "Trematode Mitochondrial",
+    22	=> "Scenedesmus obliquus mitochondrial",
+    23	=> "Thraustochytrium Mitochondrial",
+
+  }
