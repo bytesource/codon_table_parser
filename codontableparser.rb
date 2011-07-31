@@ -107,10 +107,10 @@ class CodonTableParser
   end
 
   def bundle options = {}
-    [definitions(options),
-     starts(options),
-     stops(options),
-     tables(options)]
+    {:definitions => definitions(options),
+     :starts       => starts(options),
+     :stops        => stops(options),
+     :tables       => tables(options)}
   end
 
 

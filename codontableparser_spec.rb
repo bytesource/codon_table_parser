@@ -302,10 +302,10 @@ describe CodonTableParser do
             bundle = @parser.bundle
 
             bundle.size.should == 4
-            bundle[0].size.should == 17
-            bundle[1].size.should == 17
-            bundle[2].size.should == 17
-            bundle[3].size.should == 17
+            bundle[:definitions].size.should == 17
+            bundle[:starts].size.should == 17
+            bundle[:stops].size.should == 17
+            bundle[:tables].size.should == 17
           end
 
           it "should only return the values of each table from the ids specified with the 'range' option" do
@@ -314,7 +314,8 @@ describe CodonTableParser do
             range = [1, 2, 3, 5, 9]
 
             bundle.size.should == 4
-            bundle.each do |hash|
+
+            bundle.each do |type, hash|
               hash.keys.should == range
             end
           end
@@ -337,10 +338,10 @@ describe CodonTableParser do
                                                22 => "Scenedesmus obliquus mitochondrial"},
                                                :starts => {1  => {:add    => ['gtg']}, 
                                                            13 => {:remove => ['ttg', 'ata', 'gtg']}}
-            bundle[0].should == reference_definitions
-            bundle[1].should == reference_starts
-            bundle[2].should == reference_stops
-            bundle[3].should == reference_tables
+            bundle[:definitions].should == reference_definitions
+            bundle[:starts].should == reference_starts
+            bundle[:stops].should == reference_stops
+            bundle[:tables].should == reference_tables
               end
 
           it "should handle every possible option" do
@@ -354,10 +355,10 @@ describe CodonTableParser do
                                     :starts => {1  => {:add => ["zzz"], :remove => ["ttg"]}}, 
                                     :stops  => {1  => {:add => ["zzz"], :remove => ["taa"]}} 
 
-            bundle[0].should == {1 => "hello"}
-            bundle[1][id].sort.should == %w(zzz ctg atg).sort
-            bundle[2][id].sort.should == %w(zzz tag tga).sort
-            bundle[3][id].should == reference_tables[id]
+            bundle[:definitions].should     == {1 => "hello"}
+            bundle[:starts][id].sort.should == %w(zzz ctg atg).sort
+            bundle[:stops][id].sort.should  == %w(zzz tag tga).sort
+            bundle[:tables][id].should      == reference_tables[id]
           end
         end
       end
