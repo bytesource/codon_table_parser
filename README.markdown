@@ -261,14 +261,14 @@ The *bundle* method accepts all options from the methods described above, that i
 To return the same values as are assigned to the constants *DEFINITIONS*, *STARTS*, *STOPS*, and *TABLES* of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class, calling *bundle* with the following options will do:
 
 ``` ruby
-bundle = parser.bundle :names => {1  => "Standard (Eukaryote)",
-                                  4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
-                                  3  => "Yeast Mitochondorial",
-                                  6  => "Ciliate Macronuclear and Dasycladacean",
-                                  9  => "Echinoderm Mitochondrial",
-                                  11 => "Bacteria",
-                                  14 => "Flatworm Mitochondrial",
-                                  22 => "Scenedesmus obliquus mitochondrial"},
+bundle = parser.bundle :names  => {1  => "Standard (Eukaryote)",
+                                   4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
+                                   3  => "Yeast Mitochondorial",
+                                   6  => "Ciliate Macronuclear and Dasycladacean",
+                                   9  => "Echinoderm Mitochondrial",
+                                   11 => "Bacteria",
+                                   14 => "Flatworm Mitochondrial",
+                                   22 => "Scenedesmus obliquus mitochondrial"},
                        :starts => {1  => {:add    => ['gtg']}, 
                                    13 => {:remove => ['ttg', 'ata', 'gtg']}}
 
