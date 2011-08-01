@@ -1,6 +1,6 @@
 # CodonTableParser
 
-Parses the NCBI genetic code table with a multiline Regex, generating hash maps of each species' name, start codons, stop codons and codon table. 
+Parses the [NCBI genetic code](ftp://ftp.ncbi.nih.gov/entrez/misc/data/gc.prt) table with a multiline Regex, generating hash maps of each species' name, start codons, stop codons and codon table. 
 The output can be easily customized and used to update the respective constants of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class whenever the original data changes.
 
 ## Usage
@@ -8,18 +8,26 @@ The output can be easily customized and used to update the respective constants 
 ``` ruby
 file = 'path/to/genetic_code.txt'
 parser = CodonTableParser(file)
+```
 
-# The first line of the file is read to determine if the content is correct. If not, an exception is thrown:
+The first line of the file is read to determine if the content is correct. If not, an exception is thrown:
 
+``` ruby
 file = 'path/to/file_with_wrong_content.txt'
 parser = CodonTableParser(file)
 # Exception: This is not the NCBI genetic code table
-
 ```
 
 ### Instance Methods
 
-Every method can take a *:range* option that specifies the ids of the species to be considered in the output. 
+The following instance methods are available:
+* CodonTableParser#definitions
+* CodonTableParser#starts
+* CodonTableParser#stops
+* CodonTableParser#tables
+* CodonTableParser#bundle
+
+Every intance method can take a *:range* option that specifies the ids of the species to be considered in the output. 
 A range is specified as an array of integers, Ranges or both. 
 Example:
 
@@ -30,11 +38,13 @@ Example:
 ids not present in the originial data are ignored.
 Besides the *:range* option, several methods also take other options as demonstrated below.
 
-#### definitions
-
-# Return default hash map of names
+#### CodonTableParser#definitions
 
 ``` ruby
+
+parser = CodonTableParser(file)
+
+# Return default hash map of names
 definitions = parser.definitions
 
 definitions
@@ -58,6 +68,7 @@ definitions
 
 # Return the names names for the ids specified in :range
 definitions = parser.definitions :range => [(1..3), 5, 9]
+
 # Return default hash map with custom names for the ids 1 and 3
 definitions = parser.definitions :names => {1  => "Standard (Eukaryote)",
                                             3  => "Yeast Mitochondorial"}
@@ -73,9 +84,12 @@ parser.definitions :range => [(1..3), 5, 9],
 
 ```
 
-#### starts
+#### CodonTableParser#starts
 
 ``` ruby
+
+parser = CodonTableParser(file)
+
 # Return default hash map of start codons
 start_codons = parser.starts
 
@@ -121,9 +135,12 @@ start_codons = parser.starts :range => [(1..3), 13],
 
 ```                           
 
-#### stops
+#### CodonTableParser#stops
 
 ``` ruby
+
+parser = CodonTableParser(file)
+
 stop_codons = parser.stops
 
 # Return the default hash map of stop codons
@@ -170,15 +187,17 @@ stop_codons = parser.stops :range => [(1..3), 5, 13],
 
 ```
 
-#### tables
+#### CodonTableParser#tables
 
 ``` ruby
+
+parser = CodonTableParser(file)
+
 # Return codon tables of all species
 codon_tables = parser.tables
 
 tables
 # {
-#     # codon table 1
 #     1 => {
 #       'ttt' => 'F', 'tct' => 'S', 'tat' => 'Y', 'tgt' => 'C',
 #       'ttc' => 'F', 'tcc' => 'S', 'tac' => 'Y', 'tgc' => 'C',
@@ -200,8 +219,6 @@ tables
 #       'gta' => 'V', 'gca' => 'A', 'gaa' => 'E', 'gga' => 'G',
 #       'gtg' => 'V', 'gcg' => 'A', 'gag' => 'E', 'ggg' => 'G',
 #     },
-# 
-#     # codon table 2
 #     2 => { ... },
 #     3 => { ... },
 #     ...
@@ -214,9 +231,12 @@ codon_tables = parser.tables :range => [(1..3), 5, 9, 23]
 
 ```
 
-#### bundle
+#### CodonTableParser#bundle
 
 ``` ruby
+
+parser = CodonTableParser(file)
+
 # Return the definitions, codon table, start and stop codons for all species as a hash map
 bundle = parser.bundle
 
@@ -227,13 +247,13 @@ bundle
  :tables      => # return value of the 'tables' method
 }
 
+```
 The *bundle* method accepts all options from the methods described above, that is:
 * :range  (applied to all methods) 
-* :names  (applied to the definitions method) 
-* :starts (applied to the starts method)
-* :stops  (applied to the stops method)
+* :names  (applied to the *definitions* method) 
+* :starts (applied to the *starts* method)
+* :stops  (applied to the *stops* method)
 
-```
 
 In order to produce the same output as assigned to the constants (DEFINITIONS, STARTS, STOPS, TABLES) of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class, calling *bundle* with the following options will do:
 
@@ -246,7 +266,7 @@ bundle = parser.bundle :names => {1  => "Standard (Eukaryote)",
                                   11 => "Bacteria",
                                   14 => "Flatworm Mitochondrial",
                                   22 => "Scenedesmus obliquus mitochondrial"},
-                                  :starts => {1 => {:add    => ['gtg']}, 
-                                             13 => {:remove => ['ttg', 'ata', 'gtg']}}
+                                  :starts => {1  => {:add    => ['gtg']}, 
+                                              13 => {:remove => ['ttg', 'ata', 'gtg']}}
 
 ```
