@@ -5,16 +5,24 @@ The output can be easily customized and used to update the respective constants 
 
 ## Usage
 
+Without any parameters, the genetic code file is downloaded directly from the NCBI web site
+
+``` ruby
+parser = CodonTableParser.new
+```
+
+Alternatively, the genetic code file can be loaded from a path
+
 ``` ruby
 file = 'path/to/genetic_code.txt'
-parser = CodonTableParser(file)
+parser = CodonTableParser.new(file)
 ```
 
 The first line of the file is read to determine if the content is correct. If not, an exception is thrown:
 
 ``` ruby
-file = 'path/to/file_with_wrong_content.txt'
-parser = CodonTableParser(file)
+wrong_content = 'path/to/wrong_content.txt'
+parser = CodonTableParser.new(wrong_content)
 # Exception: This is not the NCBI genetic code table
 ```
 
@@ -43,7 +51,7 @@ Besides the *:range* option, several methods also take other options as demonstr
 
 ``` ruby
 
-parser = CodonTableParser(file)
+parser = CodonTableParser.new
 
 # Return default hash map of names
 definitions = parser.definitions
@@ -89,7 +97,7 @@ parser.definitions :range => [(1..3), 5, 9],
 
 ``` ruby
 
-parser = CodonTableParser(file)
+parser = CodonTableParser.new
 
 # Return default hash map of start codons
 start_codons = parser.starts
@@ -140,7 +148,7 @@ start_codons = parser.starts :range => [(1..3), 13],
 
 ``` ruby
 
-parser = CodonTableParser(file)
+parser = CodonTableParser.new
 
 # Return the default hash map of stop codons
 stop_codons = parser.stops
@@ -194,7 +202,7 @@ stop_codons = parser.stops :range => [(1..3), 5, 13],
 
 ``` ruby
 
-parser = CodonTableParser(file)
+parser = CodonTableParser.new
 
 # Return codon tables of all species
 codon_tables = parser.tables
@@ -237,7 +245,7 @@ codon_tables = parser.tables :range => [(1..3), 5, 9, 23]
 
 ``` ruby
 
-parser = CodonTableParser(file)
+parser = CodonTableParser.new
 
 # Return the definitions, codon table, start and stop codons for all species as a hash map
 bundle = parser.bundle
