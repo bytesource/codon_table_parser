@@ -206,6 +206,13 @@ describe CodonTableParser do
           start_codons2   = @parser.starts 1  => {:add  => ['gtg'], :remove => ['ttg', 'zzz']}
 
           start_codons2[1].should  == %w(ctg atg gtg)
+
+          # Alternative syntax (normally only used in the 'bundle' method)
+          start_codons3 = @parser.starts :starts => {1  => {:add => ['gtg']}, 
+                                                     13 => {:remove => ['ttg', 'ata', 'gtg']}} 
+
+          start_codons3[1].should  == %w(ttg ctg atg gtg)
+          start_codons3[13].should == %w(atg)
         end
       end
 
@@ -255,6 +262,13 @@ describe CodonTableParser do
           stop_codons2   = @parser.stops 1  => {:add  => ['gtg'], :remove => ['taa', 'zzz']}
 
           stop_codons2[1].should  == %w(tag tga gtg)
+
+          # Alternative syntax (normally only used in the 'bundle' method)
+          stop_codons3 = @parser.stops :stops => {1  => {:add => ['gtg']}, 
+                                                  13 => {:add => ['gcc'], :remove => ['taa', 'tag', 'zzz']}} 
+
+          stop_codons3[1].should  == %w(taa tag tga gtg)
+          stop_codons3[13].should == %w(gcc)
         end
 
         it "should correctly using both the 'range' option as well as the 'add/remove' option in one method call" do

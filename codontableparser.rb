@@ -73,7 +73,7 @@ class CodonTableParser
         end
       end
       id  = species[:id]
-      # Options can either be passes as :starts => {1 => {:add => ...}} or 1 => {:add => ...}
+      # Options can either be passed as :starts => {1 => {:add => ...}} or 1 => {:add => ...}
       selection = options[:starts] || options
       codons = custom_codons(selection[id], codons)
       custom_range(options[:range], id) {[id, codons]}
@@ -91,7 +91,7 @@ class CodonTableParser
       end
 
       id = species[:id]
-      # Options can either be passes as :starts => {1 => {:add => ...}} or 1 => {:add => ...}
+      # Options can either be passed as :stops => {1 => {:add => ...}} or 1 => {:add => ...}
       selection = options[:stops] || options
       codons = custom_codons(selection[id], codons)
       custom_range(options[:range], id) {[id, codons]}
