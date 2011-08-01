@@ -3,14 +3,29 @@
 # to return definitions, start  & stop codons as well as codon tables that can be used 
 class CodonTableParser
 
-  def initialize(path)
+  attr_reader :address
+
+  @default_address = 'ftp://ftp.ncbi.nih.gov/entrez/misc/data/gc.prt'
+
+  class << self
+    attr_accessor :default_address
+  end
+
+  def initialize(path = '')
+    @address     = CodonTableParser.default_address
     data         = content(path)
     @codons      = triplets(data)
     @parsed_data = parse(data)
   end
 
   def content path
-    f = File.new(path)
+    if path.empty?
+      require 'open-uri'
+      f = open(@address)
+    else
+      f = File.new(path)
+    end
+
     first_line = f.readline
     raise Exception, "This is not the NCBI genetic code table" unless first_line =~ /--\*+/
     f.read.each_line do |line|

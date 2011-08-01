@@ -4,12 +4,10 @@ describe CodonTableParser do
 
   describe "On initialization" do
 
-    it "should throw an exception if a file with the wrong content is passed" do
-      wrong_file = 'data/dummy.txt'
-
+    it "should successfully dowload the genetic code file from the NCBI web site" do
       lambda do
-        CodonTableParser.new(wrong_file)
-      end.should raise_error(Exception, "This is not the NCBI genetic code table")
+        CodonTableParser.new
+      end.should_not raise_error
     end
 
     it "should accept the correct file" do
@@ -18,6 +16,14 @@ describe CodonTableParser do
       lambda do
         CodonTableParser.new(correct_file)
       end.should_not raise_error
+    end
+
+    it "should throw an exception if a file with the wrong content is passed" do
+      wrong_file = 'data/dummy.txt'
+
+      lambda do
+        CodonTableParser.new(wrong_file)
+      end.should raise_error(Exception, "This is not the NCBI genetic code table")
     end
   end
 

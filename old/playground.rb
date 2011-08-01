@@ -1,6 +1,7 @@
 require '../codontableparser'
 
-table = CodonTableParser.new('../data/codons.txt')
+# table = CodonTableParser.new('../data/codons.txt')
+table = CodonTableParser.new
 
 require 'pp'
 
