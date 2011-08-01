@@ -258,7 +258,7 @@ The *bundle* method accepts all options from the methods described above, that i
 * :stops  (applied to the *stops* method)
 
 
-In order to produce the same output as assigned to the constants (DEFINITIONS, STARTS, STOPS, TABLES) of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class, calling *bundle* with the following options will do:
+To return the same values as are assigned to the constants *DEFINITIONS*, *STARTS*, *STOPS*, and *TABLES* of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class, calling *bundle* with the following options will do:
 
 ``` ruby
 bundle = parser.bundle :names => {1  => "Standard (Eukaryote)",
@@ -269,7 +269,7 @@ bundle = parser.bundle :names => {1  => "Standard (Eukaryote)",
                                   11 => "Bacteria",
                                   14 => "Flatworm Mitochondrial",
                                   22 => "Scenedesmus obliquus mitochondrial"},
-                                  :starts => {1  => {:add    => ['gtg']}, 
-                                              13 => {:remove => ['ttg', 'ata', 'gtg']}}
+                       :starts => {1  => {:add    => ['gtg']}, 
+                                   13 => {:remove => ['ttg', 'ata', 'gtg']}}
 
 ```
