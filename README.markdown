@@ -21,6 +21,7 @@ parser = CodonTableParser(file)
 ### Instance Methods
 
 The following instance methods are available:
+
 * CodonTableParser#definitions
 * CodonTableParser#starts
 * CodonTableParser#stops
@@ -79,8 +80,8 @@ definitions[3]
 
 # Return the names for the ids specified in :range, with custom names for the ids 1 and 3
 parser.definitions :range => [(1..3), 5, 9],
-                   :names => {1  => "Standard (Eukaryote)",
-                              3  => "Yeast Mitochondorial"}
+                   :names => {1 => "Standard (Eukaryote)",
+                              3 => "Yeast Mitochondorial"}
 
 ```
 
@@ -141,9 +142,9 @@ start_codons = parser.starts :range => [(1..3), 13],
 
 parser = CodonTableParser(file)
 
+# Return the default hash map of stop codons
 stop_codons = parser.stops
 
-# Return the default hash map of stop codons
 stops
 # {1=>["taa", "tag", "tga"],
 #  2=>["taa", "tag", "aga", "agg"],
@@ -172,8 +173,10 @@ stop_codons = parser.stops :range => [(1..3), 5, 9]
 stop_codons = parser.stops 1  => {:add => ['gtg'], :remove => ['taa']},
                            13 => {:add => ['gcc'], :remove => ['taa', 'tag']} 
 
-stop_codons[1] = ["tag", "tga", "gtg"]
-stop_codons[13] = ["gcc"]
+stop_codons[1]
+# ["tag", "tga", "gtg"]
+stop_codons[13]
+# ["gcc"]
 
 # Alternative syntax, normally only used in the bundle method described below
 stop_codons = parser.stops :stops => {1  => {:add => ['gtg'], :remove => ['taa']},
@@ -226,7 +229,6 @@ tables
 # }
 
 # Return the codon tables for the ids specified with :range
-
 codon_tables = parser.tables :range => [(1..3), 5, 9, 23]
 
 ```
@@ -241,14 +243,15 @@ parser = CodonTableParser(file)
 bundle = parser.bundle
 
 bundle
-{:definitions => # return value of the 'definitions' method
- :starts      => # return value of the 'starts' method
- :stops       => # return value of the 'stops' method
- :tables      => # return value of the 'tables' method
-}
+# {:definitions => {return value of the 'definitions' method}
+#  :starts      => {return value of the 'starts' method}
+#  :stops       => {return value of the 'stops' method}
+#  :tables      => {return value of the 'tables' method}
+# }
 
 ```
 The *bundle* method accepts all options from the methods described above, that is:
+
 * :range  (applied to all methods) 
 * :names  (applied to the *definitions* method) 
 * :starts (applied to the *starts* method)
