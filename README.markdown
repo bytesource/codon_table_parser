@@ -1,26 +1,40 @@
-CodonTableParser
+# CodonTableParser
 
-Parses the NCBI genetic code table, generating hash maps of each species' name, start codons, stop codons and codon table. 
-The output can be customized easily and used to update the respective constants of BioRuby's CodonTable class whenever the original data changes.
+Parses the NCBI genetic code table with a multiline Regex, generating hash maps of each species' name, start codons, stop codons and codon table. 
+The output can be easily customized and used to update the respective constants of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class whenever the original data changes.
 
+## Usage
 
+``` ruby
+file = 'path/to/genetic_code.txt'
+parser = CodonTableParser(file)
 
-The first line of the file is read to determine if the content is correct. If not, an exception is thrown:
+# The first line of the file is read to determine if the content is correct. If not, an exception is thrown:
 
+file = 'path/to/file_with_wrong_content.txt'
+parser = CodonTableParser(file)
+# Exception: This is not the NCBI genetic code table
 
-Instance Methods
+```
 
-Every method can take a :range option that specifies the ids of the species to be considered in the output. 
+### Instance Methods
+
+Every method can take a *:range* option that specifies the ids of the species to be considered in the output. 
 A range is specified as an array of integers, Ranges or both. 
 Example:
+
+``` ruby
 :range => [(1..3), 5, 9] # converted internally to [1, 2, 3, 5, 9]
+
+```
 ids not present in the originial data are ignored.
+Besides the *:range* option, several methods also take other options as demonstrated below.
 
-Besides the :range option, several methods also take other options as demonstrated below.
-
-definitions
+#### definitions
 
 # Return default hash map of names
+
+``` ruby
 definitions = parser.definitions
 
 definitions
@@ -53,12 +67,15 @@ definitions[3]
 # "Yeast Mitochondorial"
 
 # Return the names for the ids specified in :range, with custom names for the ids 1 and 3
-parser.definitions :names => :range => [(1..3), 5, 9],
-                             {1  => "Standard (Eukaryote)",
+parser.definitions :range => [(1..3), 5, 9],
+                   :names => {1  => "Standard (Eukaryote)",
                               3  => "Yeast Mitochondorial"}
 
-starts
+```
 
+#### starts
+
+``` ruby
 # Return default hash map of start codons
 start_codons = parser.starts
 
@@ -93,14 +110,20 @@ start_codons[1]
 start_codons[13]
 # ["atg"]
 
+# Alternative syntax, normally only used in the bundle method described below
+start_codons = parser.starts :starts => {1  => {:add => ['gtg']}, 
+                                         13 => {:remove => ['ttg', 'ata', 'gtg']}} 
+
 # Return the start codons for the ids specified with :range, add or remove codons from specific ids
 start_codons = parser.starts :range => [(1..3), 13],
                              1  => {:add => ['gtg']}, 
                              13 => {:remove => ['ttg', 'ata', 'gtg']} 
 
+```                           
 
-stops
+#### stops
 
+``` ruby
 stop_codons = parser.stops
 
 # Return the default hash map of stop codons
@@ -129,20 +152,27 @@ stop_codons = parser.stops :range => [(1..3), 5, 9]
 
 # Add or remove stop codons as necessary
 
-stop_codons = @parser.stops 1  => {:add  => ['gtg'], :remove => ['taa']},
-                            13 => {:remove => ['taa', 'tag'], :add => ['gcc']} 
+stop_codons = parser.stops 1  => {:add => ['gtg'], :remove => ['taa']},
+                           13 => {:add => ['gcc'], :remove => ['taa', 'tag']} 
 
 stop_codons[1] = ["tag", "tga", "gtg"]
 stop_codons[13] = ["gcc"]
 
+# Alternative syntax, normally only used in the bundle method described below
+stop_codons = parser.stops :stops => {1  => {:add => ['gtg'], :remove => ['taa']},
+                                      13 => {:add => ['gcc'], :remove => ['taa', 'tag']}}
+
 
 # Return the stop codons for the ids specified with :range, add or remove codons from specific ids
-stop_codons = @parser.stops :range => [(1..3), 5, 13],
-                            1  => {:add  => ['gtg'], :remove => ['taa']},
-                            13 => {:remove => ['taa', 'tag'], :add => ['gcc']}
+stop_codons = parser.stops :range => [(1..3), 5, 13],
+                            1  => {:add => ['gtg'], :remove => ['taa']},
+                            13 => {:add => ['gcc'], :remove => ['taa', 'tag']}
 
-tables
+```
 
+#### tables
+
+``` ruby
 # Return codon tables of all species
 codon_tables = parser.tables
 
@@ -182,9 +212,11 @@ tables
 
 codon_tables = parser.tables :range => [(1..3), 5, 9, 23]
 
+```
 
-bundle
+#### bundle
 
+``` ruby
 # Return the definitions, codon table, start and stop codons for all species as a hash map
 bundle = parser.bundle
 
@@ -195,27 +227,26 @@ bundle
  :tables      => # return value of the 'tables' method
 }
 
+The *bundle* method accepts all options from the methods described above, that is:
+* :range  (applied to all methods) 
+* :names  (applied to the definitions method) 
+* :starts (applied to the starts method)
+* :stops  (applied to the stops method)
 
+```
 
+In order to produce the same output as assigned to the constants (DEFINITIONS, STARTS, STOPS, TABLES) of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class, calling *bundle* with the following options will do:
 
+``` ruby
+bundle = parser.bundle :names => {1  => "Standard (Eukaryote)",
+                                  4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
+                                  3  => "Yeast Mitochondorial",
+                                  6  => "Ciliate Macronuclear and Dasycladacean",
+                                  9  => "Echinoderm Mitochondrial",
+                                  11 => "Bacteria",
+                                  14 => "Flatworm Mitochondrial",
+                                  22 => "Scenedesmus obliquus mitochondrial"},
+                                  :starts => {1 => {:add    => ['gtg']}, 
+                                             13 => {:remove => ['ttg', 'ata', 'gtg']}}
 
-
-
-
-
-
-
-
-The values of the BioRuby's CodonTable
-
- bundle = @parser.bundle :names => {1  => "Standard (Eukaryote)",
-                                               4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
-                                               3  => "Yeast Mitochondorial",
-                                               6  => "Ciliate Macronuclear and Dasycladacean",
-                                               9  => "Echinoderm Mitochondrial",
-                                               11 => "Bacteria",
-                                               14 => "Flatworm Mitochondrial",
-                                               22 => "Scenedesmus obliquus mitochondrial"},
-                                               :starts => {1  => {:add    => ['gtg']}, 
-                                                           13 => {:remove => ['ttg', 'ata', 'gtg']}}
-
+```
