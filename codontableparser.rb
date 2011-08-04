@@ -82,7 +82,7 @@ class CodonTableParser
   def starts options = {}
     Hash[@parsed_data.map do |species| 
       codons = []
-      species[:sncbieaa].scan(/./).each_with_index do |pos, i|
+      species[:sncbieaa].split(//).each_with_index do |pos, i|
         if pos == 'M'
           codons << @codons[i]
         end
@@ -99,7 +99,7 @@ class CodonTableParser
   def stops options = {}
     Hash[@parsed_data.map do |species|
       codons = []
-      species[:ncbieaa].scan(/./).each_with_index do |pos, i|
+      species[:ncbieaa].split(//).each_with_index do |pos, i|
         if pos == '*'
           codons << @codons[i]
         end
@@ -135,7 +135,7 @@ class CodonTableParser
     base2 = /-- Base2\s+([A-Z]+)#{del}/.source
     base3 = /-- Base3\s+([A-Z]+)/.source
     data.scan(/#{base1}#{base2}#{base3}/m).first.map do |base|
-      base.scan(/./)
+      base.split(//)
     end
   end
 
@@ -167,7 +167,7 @@ class CodonTableParser
   end
 
   def table triplets, ncbieaa
-    ncbieaa = ncbieaa.scan(/./)
+    ncbieaa = ncbieaa.split(//)
 
     hash = {}
     triplets.each_with_index do |codon, i|
