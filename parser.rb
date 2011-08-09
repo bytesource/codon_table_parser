@@ -27,13 +27,6 @@ class CodonsParser < Parslet::Parser
 end
 
 pp CodonsParser.new.parse_with_debug(text)
-<<<<<<< HEAD
-# Expected at least 1 of LINE NEWLINE at line 1 char 1.
-# `- Expected at least 1 of LINE NEWLINE at line 1 char 1.
-#    `- Failed to match sequence (LINE NEWLINE) at line 233 char 1.
-#       `- Failed to match sequence (LF CR?) at line 233 char 1.
-#          `- Premature end of input at line 233 char 1.
-=======
 # EVERY line is parsed as a comment:
 
 # {:comment=>
@@ -52,5 +45,4 @@ pp CodonsParser.new.parse_with_debug(text)
 # ...
 #  {:comment=>"}"@10642}]
 
->>>>>>> parser
 
