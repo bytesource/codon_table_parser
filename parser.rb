@@ -2,23 +2,42 @@ require 'parslet'
 require 'parslet/convenience'
 require 'pp'
 
-text = File.read('data/codons.txt')
-# pp text
+text  = File.read('data/codons.txt')
+
+
+
 
 class CodonsParser < Parslet::Parser
 
-  rule(:file)            {(line >> newline.maybe).repeat}          
-  rule(:line)            {content.as(:value) | no_value.as(:comment)}
-  rule(:content)         {match('\s{2}\d+\s') >> textdata.repeat}
-  rule(:no_value)        {match('\s{2}\d+\s').absent? >> textdata.repeat(1)}
-  rule(:textdata)        {((lf | cr).absent? >> any).repeat(1)}
-  # rule(:content)         {long_name >> short_name.maybe >> id >> ncbieaa >> sncbieaa}
-  # rule(:long_name)       {}
-  # rule(:short_name)      {}
-  # rule(:id)              {}
-  # rule(:ncbieaa)         {}
-  # rule(:sncbieaa)        {}
+  rule(:file)    {comment | block}
+  rule(:comment)  {(open.absent? >> any).repeat(1) >> open}
+  rule(:block)    {(close.absent? >> any).repeat(1) >> close}
 
+  rule(:open)    {str('{')}
+  rule(:close)   {str('}')}
+
+  # rule(:file)            {(block.as(:block) >> comma.maybe).repeat}
+  # rule(:block)           {long_name | id | text}
+  # rule(:long_name)       {str("\n {\n  name ") >> str('"') >> ((str('"').absent? >> text).repeat).as(:long_name) >> str('" ')}
+  # rule(:id)              {str("\n  id ") >> (match('\d').repeat).as(:id) >> text}
+  # 
+  # rule(:text)            {(comma.absent? >> any).repeat(1)}
+  # rule(:comma)           {str(',')}
+
+  # rule(:file)            {(line >> newline.maybe).repeat}   
+  # # As Parslet tries to match :content first, it will only match :no_value if it didn't match :content.
+  # rule(:line)            {content | no_value.as(:comment)} 
+  # rule(:content)         {long_name | id}
+  # rule(:no_value)        {textdata.repeat(1)}
+  # rule(:textdata)        {((lf | cr).absent? >> any).repeat(1)}
+  # rule(:long_name)       {str('  name "') >> ((any | lf).repeat).as(:long_name) >> str('"') >> textdata.repeat}
+  # # rule(:ncbieaa)         {}
+  # # 'match': All regular expressions can be used, as long as they match only a SINGLE character at a time. 
+  # rule(:id)              {str('  id ') >> (match('\d').repeat).as(:id) >> textdata.repeat}
+  # # rule(:content)         {long_name >> short_name.maybe >> id >> ncbieaa >> sncbieaa}
+  # # rule(:short_name)      {}
+  # # rule(:id)              {}
+  # # rule(:sncbieaa)        {}
   rule(:newline)         {lf.repeat(1) >> cr.maybe}
   rule(:lf)              {str("\n")}
   rule(:cr)              {str("\r")}
@@ -26,7 +45,7 @@ class CodonsParser < Parslet::Parser
   root(:file)
 end
 
-pp CodonsParser.new.parse_with_debug(text)
+# pp CodonsParser.new.parse_with_debug(text)
 # EVERY line is parsed as a comment:
 
 # {:comment=>
