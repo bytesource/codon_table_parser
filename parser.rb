@@ -9,59 +9,51 @@ text  = File.read('data/codons.txt')
 
 class CodonsParser < Parslet::Parser
 
-  rule(:file)    {comment | block}
-  rule(:comment)  {(open.absent? >> any).repeat(1) >> open}
-  rule(:block)    {(close.absent? >> any).repeat(1) >> close}
+  rule(:file)    {(data | no_data.as(:no_data)).repeat(1)}
 
-  rule(:open)    {str('{')}
-  rule(:close)   {str('}')}
+  rule(:data)    {l_name >> s_name.maybe >> id >> ncbieaa >> sncbieaa}
+  rule(:no_data) {(data.absent? >> any).repeat(1)}
 
-  # rule(:file)            {(block.as(:block) >> comma.maybe).repeat}
-  # rule(:block)           {long_name | id | text}
-  # rule(:long_name)       {str("\n {\n  name ") >> str('"') >> ((str('"').absent? >> text).repeat).as(:long_name) >> str('" ')}
-  # rule(:id)              {str("\n  id ") >> (match('\d').repeat).as(:id) >> text}
-  # 
-  # rule(:text)            {(comma.absent? >> any).repeat(1)}
-  # rule(:comma)           {str(',')}
+  rule(:l_name)   {(str('  name ') | str('    name ')) >> d_quote >> ((text | lf).repeat).as(:l_name) >> d_quote >> eol}
+  rule(:s_name)   {str('name ') >> d_quote >> ((text | integer).repeat).as(:s_name) >> d_quote >> eol}
+  rule(:id)       {str('id ') >> integer.as(:id)}
+  rule(:ncbieaa)  {str('ncbieaa  ') >> d_quote >> text.as(:ncbieaa) >> d_quote >> eol}
+  rule(:sncbieaa) {str('sncbieaa ') >> d_quote >> text.as(:sncbieaa) >> d_quote}
 
-  # rule(:file)            {(line >> newline.maybe).repeat}   
-  # # As Parslet tries to match :content first, it will only match :no_value if it didn't match :content.
-  # rule(:line)            {content | no_value.as(:comment)} 
-  # rule(:content)         {long_name | id}
-  # rule(:no_value)        {textdata.repeat(1)}
-  # rule(:textdata)        {((lf | cr).absent? >> any).repeat(1)}
-  # rule(:long_name)       {str('  name "') >> ((any | lf).repeat).as(:long_name) >> str('"') >> textdata.repeat}
-  # # rule(:ncbieaa)         {}
+  rule(:eol)      {space.maybe >> str(",\n  ")}
+  rule(:integer)  {match('[0-9]').repeat(1)}
   # # 'match': All regular expressions can be used, as long as they match only a SINGLE character at a time. 
-  # rule(:id)              {str('  id ') >> (match('\d').repeat).as(:id) >> textdata.repeat}
-  # # rule(:content)         {long_name >> short_name.maybe >> id >> ncbieaa >> sncbieaa}
-  # # rule(:short_name)      {}
-  # # rule(:id)              {}
-  # # rule(:sncbieaa)        {}
-  rule(:newline)         {lf.repeat(1) >> cr.maybe}
-  rule(:lf)              {str("\n")}
-  rule(:cr)              {str("\r")}
+  rule(:text)     {(match('[A-Z]') | match('[a-z]') | space | str(';') | str('*') | str('-')).repeat(1)}
+  rule(:d_quote)  {str('"')}
+  rule(:space)    {str("\s").repeat(1)}
+  rule(:lf)       {str("\n")}
+  rule(:cr)       {str("\r")}
   
   root(:file)
 end
 
 # pp CodonsParser.new.parse_with_debug(text)
-# EVERY line is parsed as a comment:
 
-# {:comment=>
-#    "--**************************************************************************"@0},
-#  {:comment=>"--  This is the NCBI genetic code table"@77},
-#  {:comment=>
-#    "--  Initial base data set from Andrzej Elzanowski while at PIR International"@117},
-# ...
-# ...
-# {:comment=>"  name \"Thraustochytrium Mitochondrial\" ,"@10199},
-#  {:comment=>"  id 23 ,"@10241},
-#  {:comment=>
-#    "  ncbieaa  \"FF*LSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG\","@10251},
-#  {:comment=>
-#    "  sncbieaa \"--------------------------------M--M---------------M------------\""@10330},
-# ...
-#  {:comment=>"}"@10642}]
+
+class TestParser < Parslet::Parser
+
+  rule(:l_name)   {(str('  name ') | str('    name ')) >> d_quote >> ((text | lf).repeat).as(:l_name) >> d_quote >> eol}
+  rule(:eol)      {space.maybe >> str(",\n  ")}
+  rule(:integer)  {match('[0-9]').repeat(1)}
+  # # 'match': All regular expressions can be used, as long as they match only a SINGLE character at a time. 
+  rule(:text)     {(match('[A-Z]') | match('[a-z]') | space | str(';') | str('*') | str('-')).repeat(1)}
+  rule(:d_quote)  {str('"')}
+  rule(:space)    {str("\s").repeat(1)}
+  rule(:lf)       {str("\n")}
+  rule(:cr)       {str("\r")}
+  root(:l_name)
+end
+
+
+snippet = <<DNA
+  name "Echinoderm Mitochondrial; Flatworm Mitochondrial" ,\n  
+DNA
+
+pp TestParser.new.parse_with_debug(snippet)
 
 
