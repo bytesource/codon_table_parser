@@ -45,22 +45,24 @@ class CodonTableParser
   end
 
   def parse data 
-    del       = /[^\n]*\n\s+/.source          # .+ does not work as the regex is greedy.
-    l_name    = /name "([^"]+)#{del}/.source
-    s_name    = /(|name "[^"]+#{del})/.source # Either nothing 'line does not exists' or the short name.
-      id        = /id (\d+)#{del}/.source
-    ncbieaa   = /ncbieaa  "([^"]+)#{del}/.source
-    sncbieaa  = /sncbieaa "([^"]+)/.source
+    del       = /.*?\s/.source               # .+ does not work as the regex is greedy.
+    l_name    = /name "(.*?)"#{del}/.source
+    s_name    = /(|name ".*?"#{del})/.source # Either nothing 'line does not exists' or the short name.
+    id        = /id (\d+)#{del}/.source
+    ncbieaa   = /ncbieaa  "(.*?)"#{del}/.source
+    sncbieaa  = /sncbieaa "(.*?)"/.source
 
     result = data.scan(/#{l_name}#{s_name}#{id}#{ncbieaa}#{sncbieaa}/m).
     inject([]) do |res, (l_name, s_name, id, ncbieaa, sncbieaa)|
 
-      short = s_name.match(/[A-Z]{3}\d/)[0] unless s_name.empty?
-    res << {:id         => id.to_i, 
-            :long_name  => l_name.gsub(/\n/,''),
-            :short_name => short,
-            :ncbieaa    => ncbieaa,
-            :sncbieaa   => sncbieaa}
+      short  = s_name.match(/[A-Z]{3}\d/)[0] unless s_name.empty?
+      l_name = l_name.gsub(/\n/,'')
+
+      res << {:id         => id.to_i, 
+              :long_name  => l_name,
+              :short_name => short,
+              :ncbieaa    => ncbieaa,
+              :sncbieaa   => sncbieaa}
     end
 
     result
