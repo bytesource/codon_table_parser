@@ -46,13 +46,17 @@ class CodonTableParser
 
   def parse data 
     del       = /.*?\s/.source               # .+ does not work as the regex is greedy.
+    # del       = /.*?(?=[a-z])/.source        # Using non-greedy search + pos. lookahead also works        
     l_name    = /name "(.*?)"#{del}/.source
     s_name    = /(|name ".*?"#{del})/.source # Either nothing 'line does not exists' or the short name.
     id        = /id (\d+)#{del}/.source
     ncbieaa   = /ncbieaa  "(.*?)"#{del}/.source
     sncbieaa  = /sncbieaa "(.*?)"/.source
 
-    result = data.scan(/#{l_name}#{s_name}#{id}#{ncbieaa}#{sncbieaa}/m).
+    # flag 'o':
+    # Perform inline substitutions (#{variable}) only once on creation. 
+    # Normally, the variable is inserted on every evaluation.
+    result = data.scan(/#{l_name}#{s_name}#{id}#{ncbieaa}#{sncbieaa}/mo).
     inject([]) do |res, (l_name, s_name, id, ncbieaa, sncbieaa)|
 
       short  = s_name.match(/[A-Z]{3}\d/)[0] unless s_name.empty?
