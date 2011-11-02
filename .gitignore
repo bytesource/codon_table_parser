@@ -1,5 +1,6 @@
-/dev/
+dev/
 .*swp
 .*swo
 .*~
 .directory
+pkg/
