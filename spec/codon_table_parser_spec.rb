@@ -77,13 +77,13 @@ describe CodonTableParser do
 
         it "should return a hash mapping each codon to the correct amino acid" do
 
-          reference_tables = eval(File.read('data/reference_data/reference_codon_tables.txt'))
+          reference_tables = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
 
           codons  = @parser.instance_variable_get(:@codons)
           ncbieaa = @parser.instance_variable_get(:@parsed_data)[0][:ncbieaa]
 
           table = @parser.send(:table, codons, ncbieaa)
-          # reference_tables = eval(File.read('data/reference_data/reference_codon_tables.txt'))
+          # reference_tables = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
           # table.should == reference_tables[1]
           table.should == reference_tables[1]
         end
@@ -147,7 +147,7 @@ describe CodonTableParser do
           definitions[3].should   == "world"
 
 
-          reference_definitions = eval(File.read('data/reference_data/reference_definitions.txt'))
+          reference_definitions = eval(File.read('spec/data/reference_data/reference_definitions.txt'))
 
           definitions2 = @parser.definitions :names =>  {1  => "Standard (Eukaryote)",
                                                          4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
@@ -292,7 +292,7 @@ describe CodonTableParser do
       describe "Method: 'tables'" do
 
         before(:each) do
-          @reference_tables = eval(File.read('data/reference_data/reference_codon_tables.txt'))
+          @reference_tables = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
         end
 
 
@@ -343,10 +343,10 @@ describe CodonTableParser do
           it "should return the definitions, codon tables, start and stop codons 
               exactly as given in BioRuby's CodonTable (as of July 29th, 2011)" do
 
-            reference_definitions = eval(File.read('data/reference_data/reference_definitions.txt'))
-            reference_starts      = eval(File.read('data/reference_data/reference_start_codons.txt'))
-            reference_stops       = eval(File.read('data/reference_data/reference_stop_codons.txt'))
-            reference_tables      = eval(File.read('data/reference_data/reference_codon_tables.txt'))
+            reference_definitions = eval(File.read('spec/data/reference_data/reference_definitions.txt'))
+            reference_starts      = eval(File.read('spec/data/reference_data/reference_start_codons.txt'))
+            reference_stops       = eval(File.read('spec/data/reference_data/reference_stop_codons.txt'))
+            reference_tables      = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
 
             bundle = @parser.bundle :names => {1  => "Standard (Eukaryote)",
                                                4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
@@ -362,12 +362,11 @@ describe CodonTableParser do
             bundle[:starts].should == reference_starts
             bundle[:stops].should == reference_stops
             bundle[:tables].should == reference_tables
-              end
 
           it "should handle every possible option" do
 
             id = 1
-            reference_tables = eval(File.read('data/reference_data/reference_codon_tables.txt'))
+            reference_tables = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
 
 
             bundle = @parser.bundle :range => [id],
