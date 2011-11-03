@@ -3,6 +3,13 @@
 Parses the [NCBI genetic code](ftp://ftp.ncbi.nih.gov/entrez/misc/data/gc.prt) table with a multiline Regex, generating hash maps of each species' name, start codons, stop codons and codon table. 
 The output can be easily customized and used to update the respective constants of BioRuby's [CodonTable](https://github.com/bioruby/bioruby/blob/master/lib/bio/data/codontable.rb) class whenever the original data changes.
 
+## Installation
+
+``` bash
+gem install codon_table_parser
+
+```
+
 ## Usage
 
 Without any parameters, the genetic code file is downloaded directly from the NCBI web site
