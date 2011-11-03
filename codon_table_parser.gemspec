@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.description = <<-DESCRIPTION
    Parses the NCBI genetic code table, generating hash maps of each species' name, start codons, stop codons and codon table. The output of CodonTableParser can be customized easily and used to update the respective constants of BioRuby's CodonTable class whenever the original data has changed.
    DESCRIPTION
-  s.summary = 'RStore - A library for easy batch storage of csv data into a database'
+  s.summary = "Parses the NCBI genetic code table, generating hash maps of each species' name, start codons, stop codons and codon table."
   s.email = 'stefan.rohlfing@gmail.com'
-  s.homepage = 'Parses the NCBI genetic code table, generating hash maps of each species' name, start codons, stop codons and codon table.'
+  s.homepage = 'http://github.com/bytesource/codon_table_parser'
   s.has_rdoc = false
   s.required_ruby_version = '>= 1.9.1'
   s.rubyforge_project = 'codon_table_parser'
