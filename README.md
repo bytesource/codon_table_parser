@@ -6,7 +6,7 @@ The output can be easily customized and used to update the respective constants 
 ## Installation
 
 ``` bash
-gem install codon_table_parser
+$ gem install codon_table_parser
 
 ```
 
