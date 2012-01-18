@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-# Parses the NCBI genetic code table, generating separate hash maps of each species' name, start & stop codons and codon table.  
+# Parses the NCBI genetic code table, generating separate hash maps of each species' name, start & stop codons and codon table.
 #
-# to return definitions, start  & stop codons as well as codon tables that can be used 
+# to return definitions, start  & stop codons as well as codon tables that can be used
 class CodonTableParser
 
   attr_reader :address
@@ -46,9 +46,8 @@ class CodonTableParser
     arr
   end
 
-  def parse data 
-    del       = /.*?\s/.source               # .+ does not work as the regex is greedy.
-    # del       = /.*?(?=[a-z])/.source        # Using non-greedy search + pos. lookahead also works        
+  def parse data
+    del       = /.*?/.source
     l_name    = /name "(.*?)"#{del}/.source
     s_name    = /(|name ".*?"#{del})/.source # Either nothing 'line does not exists' or the short name.
     id        = /id (\d+)#{del}/.source
@@ -56,7 +55,7 @@ class CodonTableParser
     sncbieaa  = /sncbieaa "(.*?)"/.source
 
     # flag 'o':
-    # Perform inline substitutions (#{variable}) only once on creation. 
+    # Perform inline substitutions (#{variable}) only once on creation.
     # Normally, the variable is inserted on every evaluation.
     result = data.scan(/#{l_name}#{s_name}#{id}#{ncbieaa}#{sncbieaa}/mo).
     inject([]) do |res, (l_name, s_name, id, ncbieaa, sncbieaa)|
@@ -64,7 +63,7 @@ class CodonTableParser
       short  = s_name.match(/[A-Z]{3}\d/)[0] unless s_name.empty?
       l_name = l_name.gsub(/\n/,'')
 
-      res << {:id         => id.to_i, 
+      res << {:id         => id.to_i,
               :long_name  => l_name,
               :short_name => short,
               :ncbieaa    => ncbieaa,
@@ -88,7 +87,7 @@ class CodonTableParser
   end
 
   def starts options = {}
-    Hash[@parsed_data.map do |species| 
+    Hash[@parsed_data.map do |species|
       codons = []
       species[:sncbieaa].split(//).each_with_index do |pos, i|
         if pos == 'M'
@@ -167,7 +166,7 @@ class CodonTableParser
 
   def custom_codons options, codons
     opt = options
-    if opt 
+    if opt
       codons = codons | opt[:add] if opt[:add]
       codons = codons.delete_if {|codon| opt[:remove].include?(codon)} if opt[:remove]
     end
