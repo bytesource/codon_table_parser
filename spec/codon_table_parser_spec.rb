@@ -48,8 +48,8 @@ describe CodonTableParser do
 
         # Check selected output of some species
         entry1 = parsed_data[0]
-        entry1.should == {:id=>1 , :long_name=>"Standard", :short_name=>"SGC0", 
-                          :ncbieaa=>"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG", 
+        entry1.should == {:id=>1 , :long_name=>"Standard", :short_name=>"SGC0",
+                          :ncbieaa=>"FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
                           :sncbieaa=>"---M---------------M---------------M----------------------------"}
 
         entry2 = parsed_data[3]
@@ -111,30 +111,30 @@ describe CodonTableParser do
           definitions.should ==
             {1=>"Standard", # name change in BioRuby's CodonTable class
              2=>"Vertebrate Mitochondrial",
-             3=>"Yeast Mitochondrial", 
-             4=>"Mold Mitochondrial; Protozoan Mitochondrial; Coelenterate Mitochondrial; Mycoplasma; Spiroplasma", #changed 
-             5=>"Invertebrate Mitochondrial", 
-             6=>"Ciliate Nuclear; Dasycladacean Nuclear; Hexamita Nuclear", # changed 
-             9=>"Echinoderm Mitochondrial; Flatworm Mitochondrial", # changed 
-             10=>"Euplotid Nuclear", 
-             11=>"Bacterial and Plant Plastid", #changed 
-             12=>"Alternative Yeast Nuclear", 
-             13=>"Ascidian Mitochondrial", 
-             14=>"Alternative Flatworm Mitochondrial", #changed 
-             15=>"Blepharisma Macronuclear", 
-             16=>"Chlorophycean Mitochondrial", 
-             21=>"Trematode Mitochondrial", 
-             22=>"Scenedesmus obliquus Mitochondrial", 
+             3=>"Yeast Mitochondrial",
+             4=>"Mold Mitochondrial; Protozoan Mitochondrial; Coelenterate Mitochondrial; Mycoplasma; Spiroplasma", #changed
+             5=>"Invertebrate Mitochondrial",
+             6=>"Ciliate Nuclear; Dasycladacean Nuclear; Hexamita Nuclear", # changed
+             9=>"Echinoderm Mitochondrial; Flatworm Mitochondrial", # changed
+             10=>"Euplotid Nuclear",
+             11=>"Bacterial and Plant Plastid", #changed
+             12=>"Alternative Yeast Nuclear",
+             13=>"Ascidian Mitochondrial",
+             14=>"Alternative Flatworm Mitochondrial", #changed
+             15=>"Blepharisma Macronuclear",
+             16=>"Chlorophycean Mitochondrial",
+             21=>"Trematode Mitochondrial",
+             22=>"Scenedesmus obliquus Mitochondrial",
              23=>"Thraustochytrium Mitochondrial"}
         end
 
         it "should only return the names for the ids specified with the 'range' option" do
           definitions = @parser.definitions :range => [(1..3), 5]
 
-          definitions.should == 
+          definitions.should ==
             {1=>"Standard",
              2=>"Vertebrate Mitochondrial",
-             3=>"Yeast Mitochondrial", 
+             3=>"Yeast Mitochondrial",
              5=>"Invertebrate Mitochondrial"}
         end
 
@@ -171,25 +171,25 @@ describe CodonTableParser do
           start_codons = @parser.starts
           start_codons.size.should == 17
           start_codons.keys.should == [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 21, 22, 23]
-          start_codons.should      == 
+          start_codons.should      ==
             {
-            1	=> ["ttg", "ctg", "atg"],   # need to add gtg		
-            2	=> %w(att atc ata atg gtg),
-            3	=> %w(ata atg),
-            4	=> %w(tta ttg ctg att atc ata atg gtg),
-            5	=> %w(ttg att atc ata atg gtg),
-            6	=> %w(atg),
-            9	=> %w(atg gtg),
-            10	=> %w(atg),
-            11	=> %w(ttg ctg att atc ata atg gtg),
-            12	=> %w(ctg atg),
-            13	=> ["ttg", "ata", "atg", "gtg"], # need to remove ttg, ata, gtg
-            14	=> %w(atg),
-            15	=> %w(atg),
-            16	=> %w(atg),
-            21	=> %w(atg gtg),
-            22	=> %w(atg),
-            23	=> %w(att atg gtg),
+              1	=> ["ttg", "ctg", "atg"],   # need to add gtg
+              2	=> %w(att atc ata atg gtg),
+              3	=> %w(ata atg),
+              4	=> %w(tta ttg ctg att atc ata atg gtg),
+              5	=> %w(ttg att atc ata atg gtg),
+              6	=> %w(atg),
+              9	=> %w(atg gtg),
+              10	=> %w(atg),
+              11	=> %w(ttg ctg att atc ata atg gtg),
+              12	=> %w(ctg atg),
+              13	=> ["ttg", "ata", "atg", "gtg"], # need to remove ttg, ata, gtg
+              14	=> %w(atg),
+              15	=> %w(atg),
+              16	=> %w(atg),
+              21	=> %w(atg gtg),
+              22	=> %w(atg),
+              23	=> %w(att atg gtg),
           }
         end
 
@@ -203,8 +203,8 @@ describe CodonTableParser do
 
         it "should add or remove codons as specified in the options" do
 
-          start_codons = @parser.starts 1  => {:add => ['gtg']}, 
-            13 => {:remove => ['ttg', 'ata', 'gtg']} 
+          start_codons = @parser.starts 1  => {:add => ['gtg']},
+            13 => {:remove => ['ttg', 'ata', 'gtg']}
 
           start_codons[1].should  == %w(ttg ctg atg gtg)
           start_codons[13].should == %w(atg)
@@ -214,8 +214,8 @@ describe CodonTableParser do
           start_codons2[1].should  == %w(ctg atg gtg)
 
           # Alternative syntax (normally only used in the 'bundle' method)
-          start_codons3 = @parser.starts :starts => {1  => {:add => ['gtg']}, 
-                                                     13 => {:remove => ['ttg', 'ata', 'gtg']}} 
+          start_codons3 = @parser.starts :starts => {1  => {:add => ['gtg']},
+                                                     13 => {:remove => ['ttg', 'ata', 'gtg']}}
 
           start_codons3[1].should  == %w(ttg ctg atg gtg)
           start_codons3[13].should == %w(atg)
@@ -232,23 +232,23 @@ describe CodonTableParser do
           stop_codons.keys.should == [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 21, 22, 23]
           stop_codons.should      ==
             {
-            1	=> %w(taa tag tga),
-            2	=> %w(taa tag aga agg),
-            3	=> %w(taa tag),
-            4	=> %w(taa tag),
-            5	=> %w(taa tag),
-            6	=> %w(tga),
-            9	=> %w(taa tag),
-            10	=> %w(taa tag),
-            11	=> %w(taa tag tga),
-            12	=> %w(taa tag tga),
-            13	=> %w(taa tag),
-            14	=> %w(tag),
-            15	=> %w(taa tga),
-            16	=> %w(taa tga),
-            21	=> %w(taa tag),
-            22	=> %w(tca taa tga),
-            23	=> %w(tta taa tag tga),
+              1	=> %w(taa tag tga),
+              2	=> %w(taa tag aga agg),
+              3	=> %w(taa tag),
+              4	=> %w(taa tag),
+              5	=> %w(taa tag),
+              6	=> %w(tga),
+              9	=> %w(taa tag),
+              10	=> %w(taa tag),
+              11	=> %w(taa tag tga),
+              12	=> %w(taa tag tga),
+              13	=> %w(taa tag),
+              14	=> %w(tag),
+              15	=> %w(taa tga),
+              16	=> %w(taa tga),
+              21	=> %w(taa tag),
+              22	=> %w(tca taa tga),
+              23	=> %w(tta taa tag tga),
           }
         end
 
@@ -259,8 +259,8 @@ describe CodonTableParser do
         end
 
         it "should add or remove codons as specified in the options" do
-          stop_codons = @parser.stops 1  => {:add    => ['gtg']}, 
-            13 => {:remove => ['taa', 'tag', 'zzz'], :add => ['gcc']} 
+          stop_codons = @parser.stops 1  => {:add    => ['gtg']},
+            13 => {:remove => ['taa', 'tag', 'zzz'], :add => ['gcc']}
 
           stop_codons[1].should  == %w(taa tag tga gtg)
           stop_codons[13].should == %w(gcc)
@@ -270,8 +270,8 @@ describe CodonTableParser do
           stop_codons2[1].should  == %w(tag tga gtg)
 
           # Alternative syntax (normally only used in the 'bundle' method)
-          stop_codons3 = @parser.stops :stops => {1  => {:add => ['gtg']}, 
-                                                  13 => {:add => ['gcc'], :remove => ['taa', 'tag', 'zzz']}} 
+          stop_codons3 = @parser.stops :stops => {1  => {:add => ['gtg']},
+                                                  13 => {:add => ['gcc'], :remove => ['taa', 'tag', 'zzz']}}
 
           stop_codons3[1].should  == %w(taa tag tga gtg)
           stop_codons3[13].should == %w(gcc)
@@ -279,9 +279,9 @@ describe CodonTableParser do
 
         it "should correctly using both the 'range' option as well as the 'add/remove' option in one method call" do
 
-          stop_codons = @parser.stops :range => [1, 13], 
-            1  => {:add    => ['gtg']}, 
-            13 => {:remove => ['taa', 'tag', 'zzz'], :add => ['gcc']} 
+          stop_codons = @parser.stops :range => [1, 13],
+            1  => {:add    => ['gtg']},
+            13 => {:remove => ['taa', 'tag', 'zzz'], :add => ['gcc']}
 
           stop_codons.size.should == 2
           stop_codons[1].should  == %w(taa tag tga gtg)
@@ -340,28 +340,29 @@ describe CodonTableParser do
             end
           end
 
-          it "should return the definitions, codon tables, start and stop codons 
+          it "should return the definitions, codon tables, start and stop codons
               exactly as given in BioRuby's CodonTable (as of July 29th, 2011)" do
 
-            reference_definitions = eval(File.read('spec/data/reference_data/reference_definitions.txt'))
-            reference_starts      = eval(File.read('spec/data/reference_data/reference_start_codons.txt'))
-            reference_stops       = eval(File.read('spec/data/reference_data/reference_stop_codons.txt'))
-            reference_tables      = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
+                reference_definitions = eval(File.read('spec/data/reference_data/reference_definitions.txt'))
+                reference_starts      = eval(File.read('spec/data/reference_data/reference_start_codons.txt'))
+                reference_stops       = eval(File.read('spec/data/reference_data/reference_stop_codons.txt'))
+                reference_tables      = eval(File.read('spec/data/reference_data/reference_codon_tables.txt'))
 
-            bundle = @parser.bundle :names => {1  => "Standard (Eukaryote)",
-                                               4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
-                                               3  => "Yeast Mitochondorial",
-                                               6  => "Ciliate Macronuclear and Dasycladacean",
-                                               9  => "Echinoderm Mitochondrial",
-                                               11 => "Bacteria",
-                                               14 => "Flatworm Mitochondrial",
-                                               22 => "Scenedesmus obliquus mitochondrial"},
-                                               :starts => {1  => {:add    => ['gtg']}, 
-                                                           13 => {:remove => ['ttg', 'ata', 'gtg']}}
-            bundle[:definitions].should == reference_definitions
-            bundle[:starts].should == reference_starts
-            bundle[:stops].should == reference_stops
-            bundle[:tables].should == reference_tables
+                bundle = @parser.bundle :names => {1  => "Standard (Eukaryote)",
+                                                   4  => "Mold, Protozoan, Coelenterate Mitochondrial and Mycoplasma/Spiroplasma",
+                                                   3  => "Yeast Mitochondorial",
+                                                   6  => "Ciliate Macronuclear and Dasycladacean",
+                                                   9  => "Echinoderm Mitochondrial",
+                                                   11 => "Bacteria",
+                                                   14 => "Flatworm Mitochondrial",
+                                                   22 => "Scenedesmus obliquus mitochondrial"},
+                                                   :starts => {1  => {:add    => ['gtg']},
+                                                               13 => {:remove => ['ttg', 'ata', 'gtg']}}
+                bundle[:definitions].should == reference_definitions
+                bundle[:starts].should == reference_starts
+                bundle[:stops].should == reference_stops
+                bundle[:tables].should == reference_tables
+              end
 
           it "should handle every possible option" do
 
@@ -370,9 +371,9 @@ describe CodonTableParser do
 
 
             bundle = @parser.bundle :range => [id],
-                                    :names  => {1  => "hello"}, 
-                                    :starts => {1  => {:add => ["zzz"], :remove => ["ttg"]}}, 
-                                    :stops  => {1  => {:add => ["zzz"], :remove => ["taa"]}} 
+              :names  => {1  => "hello"},
+              :starts => {1  => {:add => ["zzz"], :remove => ["ttg"]}},
+              :stops  => {1  => {:add => ["zzz"], :remove => ["taa"]}}
 
             bundle[:definitions].should     == {1 => "hello"}
             bundle[:starts][id].sort.should == %w(zzz ctg atg).sort
