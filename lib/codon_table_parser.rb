@@ -30,10 +30,14 @@ class CodonTableParser
 
     first_line = f.readline
     raise Exception, "This is not the NCBI genetic code table" unless first_line =~ /--\*+/
-    f.read.each_line do |line|
-      next if line.match(/-- /)
-      line
+
+    data = ""
+    f.each_line do |line|
+      # next if line.match(/-- /)
+      data << line
     end
+    f.close
+    data
   end
 
   def triplets data
@@ -48,6 +52,7 @@ class CodonTableParser
 
   def parse data
     del       = /.*?/.source
+    # del       = /(?:(?![a-z]).)*/.source    #  working (?:) does not create a reference
     l_name    = /name "(.*?)"#{del}/.source
     s_name    = /(|name ".*?"#{del})/.source # Either nothing 'line does not exists' or the short name.
     id        = /id (\d+)#{del}/.source
